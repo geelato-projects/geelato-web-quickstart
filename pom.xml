@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>geelato-parent</artifactId>
+        <groupId>org.geelato</groupId>
+        <version>1.0.2-SNAPSHOT</version>
+        <!--<relativePath>../geelato-parent</relativePath>-->
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>geelato-web-quickstart</artifactId>
+    <version>1.0.2-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>geelato-web-quickstart</name>
+    <!--通过该方式，则不需继承spring-boot-starter-parent-->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.geelato</groupId>
+            <artifactId>geelato-web-platform</artifactId>
+            <version>1.0.2-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <!-- 以下为远程部署 -->
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
+                <version>${wagon-ssh.version}</version>
+            </extension>
+        </extensions>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- 指定该Main Class为全局的唯一入口 -->
+                    <mainClass>org.geelato.web.quickstart.QuickStartApplication</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <!--可以把依赖的包都打包到生成的Jar包中-->
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <!--最长启动时间-->
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>wagon-maven-plugin</artifactId>
+                <version>1.0</version>
+                <!-- 运行package打包的同时运行upload-single和sshexec -->
+                <configuration>
+                    <serverId>itg</serverId>
+                    <url>scp://your_server_ip</url>
+                    <fromDir>target</fromDir>
+                    <includes>*.jar</includes>
+                    <!--注意该目录从根目录"/"开始，并非当前用户目录开始-->
+                    <toDir>xxx/deploy/upload/app</toDir>
+                    <commands>
+                        <command>/xxx/web/deploy.sh</command>
+                    </commands>
+                    <displayCommandOutputs>true</displayCommandOutputs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
