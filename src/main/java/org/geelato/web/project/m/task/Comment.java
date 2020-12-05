@@ -1,11 +1,11 @@
-package org.geelato.web.quickstart.m.task;
+package org.geelato.web.project.m.task;
 
 import org.geelato.core.meta.annotation.Entity;
 import org.geelato.core.meta.annotation.Title;
 import org.geelato.core.meta.model.entity.BaseEntity;
 
 /**
- * @author geelato
+ * @author geemeta
  */
 @Entity(name = "prj_comment")
 @Title(title = "评论")
