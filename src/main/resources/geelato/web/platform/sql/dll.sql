@@ -23,6 +23,54 @@ CREATE TABLE IF NOT EXISTS $.tableName (
 @/for
 
 
+-- 更改表
+-- @sql createOrUpdateOneTable
+
+@if !$.existsTable
+  CREATE TABLE IF NOT EXISTS $.tableName (
+    @for i in $.createList
+      `$.createList[i].name` $.createList[i].type
+      @if !$.createList[i].nullable
+        not null
+      @/if
+      @if $.createList[i].defaultValue!='' && $.createList[i].defaultValue!=null
+        DEFAULT $.createList[i].defaultValue
+      @/if
+      @if i<$.createList.length-1
+        ,
+      @/if
+    @/for
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+@/if
+
+@for i in $.uniqueList
+  alter table $.tableName add unique key(`$.uniqueList[i].name`);
+@/for
+
+@if $.existsTable
+  @for i in $.addList
+    alter table $.tableName add $.addList[i].name $.addList[i].type
+    @if !$.addList[i].nullable
+      not null
+    @/if
+    @if $.addList[i].defaultValue!='' && $.addList[i].defaultValue!=null
+      DEFAULT $.addList[i].defaultValue
+    @/if
+    ;
+  @/for
+
+  @for i in $.modifyList
+    alter table $.tableName modify `$.modifyList[i].name` $.modifyList[i].type
+    @if !$.modifyList[i].nullable
+      not null
+    @/if
+    @if $.modifyList[i].defaultValue!='' && $.modifyList[i].defaultValue!=null
+      DEFAULT $.modifyList[i].defaultValue
+    @/if
+    ;
+  @/for
+@/if
+
 -- 创建表，id字段自增
 -- @sql createOneTableAutoIncrement
 CREATE TABLE IF NOT EXISTS $.tableName (id bigint(20) NOT NULL AUTO_INCREMENT,PRIMARY KEY (id)) ENGINE=InnoDB
@@ -48,6 +96,9 @@ ALTER TABLE $.tableName
 -- @sql dropOneTable
 DROP TABLE IF EXISTS $.tableName;
 
+-- 查看列信息
+-- @sql queryColumnsByTableName
+SELECT * FROM information_schema.`COLUMNS` WHERE TABLE_SCHEMA='geelato' and TABLE_NAME='$.tableName';
 
 -- 从数据库字典中同步表信息到平台的元数据表中
 -- @sql syncTableSchemaToConfig
