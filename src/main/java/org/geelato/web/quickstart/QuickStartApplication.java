@@ -20,5 +20,6 @@ public class QuickStartApplication extends BootApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(QuickStartApplication.class, args);
+
     }
 }
