@@ -22,10 +22,33 @@ CREATE TABLE IF NOT EXISTS $.tableName (
   alter table $.tableName add unique key(`$.uniqueList[i].name`);
 @/for
 
+-- 更新表
+-- @sql upgradeOneTable
+@for i in $.addList
+    alter table $.tableName add $.addList[i].name $.addList[i].type
+    @if !$.addList[i].nullable
+    not null
+    @/if
+    @if $.addList[i].defaultValue!='' && $.addList[i].defaultValue!=null
+    DEFAULT $.addList[i].defaultValue
+    @/if
+;
+@/for
+
+  @for i in $.modifyList
+    alter table $.tableName modify `$.modifyList[i].name` $.modifyList[i].type
+    @if !$.modifyList[i].nullable
+    not null
+    @/if
+    @if $.modifyList[i].defaultValue!='' && $.modifyList[i].defaultValue!=null
+    DEFAULT $.modifyList[i].defaultValue
+    @/if
+;
+@/for
+@/if
 
 -- 更改表
 -- @sql createOrUpdateOneTable
-
 @if !$.existsTable
   CREATE TABLE IF NOT EXISTS $.tableName (
     @for i in $.createList
@@ -149,6 +172,13 @@ ALTER TABLE $.tableName ADD COLUMN $.name $.type
   DEFAULT $.defaultValue;
 @/if
 
+
+-- 在数据库中创建修改视图
+-- @sql createOneView
+CREATE OR REPLACE VIEW $.viewName
+AS
+    $.viewSql
+;
 
 -- 在数据库中创建修改视图
 -- @sql createOneView
