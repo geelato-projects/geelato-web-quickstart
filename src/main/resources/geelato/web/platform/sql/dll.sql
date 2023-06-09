@@ -13,13 +13,19 @@ CREATE TABLE IF NOT EXISTS $.tableName (
     @if $.addList[i].defaultValue!='' && $.addList[i].defaultValue!=null
       DEFAULT $.addList[i].defaultValue
     @/if
+    @if $.addList[i].comment!='' && $.addList[i].comment!=null
+      COMMENT $.addList[i].comment
+    @/if
     @if i<$.addList.length-1
       ,
     @/if
   @/for
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT $.tableTitle;
 @for i in $.uniqueList
   alter table $.tableName add unique key(`$.uniqueList[i].name`);
+@/for
+@for j in $.primaryList
+  alter table $.tableName add primary key(`$.primaryList[j].name`);
 @/for
 
 -- 更新表
