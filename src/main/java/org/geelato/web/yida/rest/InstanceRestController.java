@@ -1,7 +1,11 @@
 package org.geelato.web.yida.rest;
 
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import com.aliyun.dingtalkyida_1_0.models.BatchGetFormDataByIdListResponse;
-import com.aliyun.dingtalkyida_1_0.models.BatchGetFormDataByIdListResponseBody;
+import com.aliyun.dingtalkyida_1_0.models.BatchGetFormDataByIdListResponseBody;import com.aliyun.dingtalkyida_1_0.models.SearchFormDatasResponse;
+import com.aliyun.dingtalkyida_1_0.models.SearchFormDatasResponseBody;
+import jakarta.servlet.http.HttpServletRequest;
 import org.geelato.core.api.ApiResult;
 import org.geelato.core.orm.Dao;
 import org.geelato.web.yida.service.InstanceService;
@@ -16,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 
-@Controller
+@RestController
 @RequestMapping(value = "/api/yida/instance")
 public class InstanceRestController {
 
@@ -55,6 +59,42 @@ public class InstanceRestController {
         } catch (Exception e) {
             logger.error("基于Yida的表单实例信息查询出错（queryOne）。", e);
             logger.info("appType:{0},formUuid:{1},formInstId:{2},userId:{3}", appType, formUuid, formInstId, userId);
+            apiResult.error();
+        }
+        return apiResult;
+    }
+
+    /**
+     * 获取实体一个属性的值
+     *
+     * @param appType
+     * @param formUuid
+     * @param key      查询实例的一个属性名称
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/queryOneValueByFields/{appType}/{formUuid}", method = {RequestMethod.POST, RequestMethod.GET})
+    public ApiResult queryOneValueByFields(@PathVariable String appType, @PathVariable String formUuid, @RequestParam String key, HttpServletRequest request) {
+        ApiResult apiResult = new ApiResult();
+        String searchFieldJson = "";
+        JSONObject json = new JSONObject();
+        try {
+            request.getParameterMap().forEach((name, value) -> {
+                if ("key".equals(name)) {
+                } else {
+                    json.put(name, value[0]);
+                }
+            });
+            searchFieldJson = json.toJSONString();
+            // 获取表单数据
+            SearchFormDatasResponse searchFormDatasResponse = instanceService.search(systemToken, appType, formUuid, userId, searchFieldJson);
+            List<SearchFormDatasResponseBody.SearchFormDatasResponseBodyData> resultList = searchFormDatasResponse.getBody().getData();
+            if (resultList.size() > 0) {
+                apiResult.setData(resultList.get(0).getFormData().get(key));
+            }
+        } catch (Exception e) {
+            logger.error("基于Yida的表单实例信息查询出错（queryOneValueByFields）。", e);
+            logger.info("appType:{0},formUuid:{1},userId:{2},searchFieldJson:{3},key:{4}", appType, formUuid, userId, searchFieldJson, key);
             apiResult.error();
         }
         return apiResult;
