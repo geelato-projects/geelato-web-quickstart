@@ -13,8 +13,8 @@ public class ProjectInfo extends BaseEntity{
 
     private String name;
     private String code;
-    private Long ownerId;
-    private Long parentId;
+    private String ownerId;
+    private String parentId;
     private String description;
 
     @Title(title = "名称")
@@ -36,20 +36,20 @@ public class ProjectInfo extends BaseEntity{
     }
 
     @Title(title = "所有者")
-    public Long getOwnerId() {
+    public String getOwnerId() {
         return ownerId;
     }
 
-    public void setOwnerId(Long ownerId) {
+    public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
     }
 
     @Title(title = "父级项目")
-    public Long getParentId() {
+    public String getParentId() {
         return parentId;
     }
 
-    public void setParentId(Long parentId) {
+    public void setParentId(String parentId) {
         this.parentId = parentId;
     }
 

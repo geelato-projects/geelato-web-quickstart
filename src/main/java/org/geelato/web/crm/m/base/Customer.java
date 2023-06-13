@@ -31,7 +31,7 @@ public class Customer extends BaseEntity {
 
     private int level;
 
-    private Long salesmanId;
+    private String salesmanId;
 
     private String salesmanName;
     private String description;
@@ -140,11 +140,11 @@ public class Customer extends BaseEntity {
 
     @Col(name = "salesman_id")
     @Title(title = "销售ID")
-    public Long getSalesmanId() {
+    public String getSalesmanId() {
         return salesmanId;
     }
 
-    public void setSalesmanId(Long salesmanId) {
+    public void setSalesmanId(String salesmanId) {
         this.salesmanId = salesmanId;
     }
     @Col(name = "salesman_name")

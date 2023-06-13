@@ -10,26 +10,26 @@ import org.geelato.core.meta.model.entity.BaseEntity;
 @Entity(name = "prj_team_member")
 @Title(title = "团队")
 public class TeamMember extends BaseEntity{
-    private Long projectId;
-    private Long userId;
+    private String projectId;
+    private String userId;
     private String memberType;
     private String description;
 
     @Title(title = "所属项目")
-    public Long getProjectId() {
+    public String getProjectId() {
         return projectId;
     }
 
     @Title(title = "人员")
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public void setProjectId(Long projectId) {
+    public void setProjectId(String projectId) {
         this.projectId = projectId;
     }
 

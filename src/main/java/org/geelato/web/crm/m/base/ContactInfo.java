@@ -11,7 +11,7 @@ import org.geelato.core.meta.model.entity.BaseEntity;
 @Entity(name = "crm_contact_info")
 @Title(title = "客户联系方式")
 public class ContactInfo extends BaseEntity {
-    private Long customerId;
+    private String customerId;
     private String name;
     private String mobile;
     private String tel;
@@ -22,11 +22,11 @@ public class ContactInfo extends BaseEntity {
 
     @Col(name = "customer_id", nullable = false)
     @Title(title = "客户ID")
-    public Long getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(Long customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 

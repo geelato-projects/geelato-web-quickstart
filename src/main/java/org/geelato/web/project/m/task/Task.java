@@ -12,10 +12,10 @@ public class Task extends BaseEntity {
     private String title;
     private String type;
     private String priority;
-    private Long submitter;
-    private Long assignor;
+    private String submitter;
+    private String assignor;
     private String fixVersion;
-    private Long projectId;
+    private String projectId;
     private String description;
     private int seq;
 
@@ -23,7 +23,7 @@ public class Task extends BaseEntity {
     public Task() {
     }
 
-    public Task(Long id) {
+    public Task(String id) {
         this.setId(id);
     }
 
@@ -55,20 +55,20 @@ public class Task extends BaseEntity {
     }
 
     @Title(title = "提交者")
-    public Long getSubmitter() {
+    public String getSubmitter() {
         return submitter;
     }
 
-    public void setSubmitter(Long submitter) {
+    public void setSubmitter(String submitter) {
         this.submitter = submitter;
     }
 
     @Title(title = "指派者")
-    public Long getAssignor() {
+    public String getAssignor() {
         return assignor;
     }
 
-    public void setAssignor(Long assignor) {
+    public void setAssignor(String assignor) {
         this.assignor = assignor;
     }
 
@@ -83,11 +83,11 @@ public class Task extends BaseEntity {
 
     @Col(name = "project_id")
     @Title(title = "所属项目")
-    public Long getProjectId() {
+    public String getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(Long projectId) {
+    public void setProjectId(String projectId) {
         this.projectId = projectId;
     }
 
