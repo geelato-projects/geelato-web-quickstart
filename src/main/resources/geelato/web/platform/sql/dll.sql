@@ -21,37 +21,58 @@ CREATE TABLE IF NOT EXISTS $.tableName (
     @/if
   @/for
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT $.tableTitle;
+UPDATE platform_dev_table SET table_name = '$.tableName' WHERE entity_name = '$.tableName';
 @for i in $.uniqueList
   alter table $.tableName add unique key(`$.uniqueList[i].name`);
 @/for
-@for j in $.primaryList
-  alter table $.tableName add primary key(`$.primaryList[j].name`);
-@/for
+@if $.primaryKey!='' && $.primaryKey!=null
+  ALTER TABLE $.tableName ADD PRIMARY KEY ($.primaryKey);
+@/if
 
 -- 更新表
 -- @sql upgradeOneTable
+@if $.tableTitle!='' && $.tableTitle!=null
+  ALTER TABLE $.tableName COMMENT = $.tableTitle;
+@/if
+
 @for i in $.addList
-    alter table $.tableName add $.addList[i].name $.addList[i].type
-    @if !$.addList[i].nullable
+  alter table $.tableName add $.addList[i].name $.addList[i].type
+  @if !$.addList[i].nullable
     not null
-    @/if
-    @if $.addList[i].defaultValue!='' && $.addList[i].defaultValue!=null
+  @/if
+  @if $.addList[i].defaultValue!='' && $.addList[i].defaultValue!=null
     DEFAULT $.addList[i].defaultValue
-    @/if
-;
+  @/if
+  @if $.addList[i].comment!='' && $.addList[i].comment!=null
+    COMMENT $.addList[i].comment
+  @/if
+  ;
 @/for
 
-  @for i in $.modifyList
-    alter table $.tableName modify `$.modifyList[i].name` $.modifyList[i].type
-    @if !$.modifyList[i].nullable
+@for i in $.modifyList
+  alter table $.tableName modify `$.modifyList[i].name` $.modifyList[i].type
+  @if !$.modifyList[i].nullable
     not null
-    @/if
-    @if $.modifyList[i].defaultValue!='' && $.modifyList[i].defaultValue!=null
+  @/if
+  @if $.modifyList[i].defaultValue!='' && $.modifyList[i].defaultValue!=null
     DEFAULT $.modifyList[i].defaultValue
-    @/if
-;
+  @/if
+  @if $.modifyList[i].comment!='' && $.modifyList[i].comment!=null
+    COMMENT $.modifyList[i].comment
+  @/if
+  ;
 @/for
+@for i in $.indexList
+  alter table $.tableName drop index `$.indexList[i].keyName`;
+@/for
+
+@if $.primaryKey!='' && $.primaryKey!=null
+ ALTER TABLE $.tableName DROP PRIMARY KEY,ADD PRIMARY KEY ($.primaryKey);
 @/if
+
+@for i in $.uniqueList
+alter table $.tableName add unique key(`$.uniqueList[i].name`);
+@/for
 
 -- 更改表
 -- @sql createOrUpdateOneTable
