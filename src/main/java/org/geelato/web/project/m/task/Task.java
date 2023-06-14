@@ -4,11 +4,11 @@ package org.geelato.web.project.m.task;
 import org.geelato.core.meta.annotation.Col;
 import org.geelato.core.meta.annotation.Entity;
 import org.geelato.core.meta.annotation.Title;
-import org.geelato.core.meta.model.entity.BaseEntity;
+import org.geelato.core.meta.model.entity.BaseSortableEntity;
 
 @Entity(name = "prj_task")
 @Title(title = "任务")
-public class Task extends BaseEntity {
+public class Task extends BaseSortableEntity {
     private String title;
     private String type;
     private String priority;
@@ -17,7 +17,6 @@ public class Task extends BaseEntity {
     private String fixVersion;
     private String projectId;
     private String description;
-    private int seq;
 
 
     public Task() {
@@ -89,15 +88,6 @@ public class Task extends BaseEntity {
 
     public void setProjectId(String projectId) {
         this.projectId = projectId;
-    }
-
-    @Title(title = "次序")
-    public int getSeq() {
-        return seq;
-    }
-
-    public void setSeq(int seq) {
-        this.seq = seq;
     }
 
     @Title(title = "描述")
