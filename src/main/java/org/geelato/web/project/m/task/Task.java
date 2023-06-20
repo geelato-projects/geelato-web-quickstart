@@ -4,20 +4,19 @@ package org.geelato.web.project.m.task;
 import org.geelato.core.meta.annotation.Col;
 import org.geelato.core.meta.annotation.Entity;
 import org.geelato.core.meta.annotation.Title;
-import org.geelato.core.meta.model.entity.BaseEntity;
+import org.geelato.core.meta.model.entity.BaseSortableEntity;
 
 @Entity(name = "prj_task")
 @Title(title = "任务")
-public class Task extends BaseEntity {
+public class Task extends BaseSortableEntity {
     private String title;
     private String type;
     private String priority;
-    private Long submitter;
-    private Long assignor;
+    private String submitter;
+    private String assignor;
     private String fixVersion;
-    private Long projectId;
+    private String projectId;
     private String description;
-    private int seq;
 
 
     public Task() {
@@ -55,20 +54,20 @@ public class Task extends BaseEntity {
     }
 
     @Title(title = "提交者")
-    public Long getSubmitter() {
+    public String getSubmitter() {
         return submitter;
     }
 
-    public void setSubmitter(Long submitter) {
+    public void setSubmitter(String submitter) {
         this.submitter = submitter;
     }
 
     @Title(title = "指派者")
-    public Long getAssignor() {
+    public String getAssignor() {
         return assignor;
     }
 
-    public void setAssignor(Long assignor) {
+    public void setAssignor(String assignor) {
         this.assignor = assignor;
     }
 
@@ -83,21 +82,12 @@ public class Task extends BaseEntity {
 
     @Col(name = "project_id")
     @Title(title = "所属项目")
-    public Long getProjectId() {
+    public String getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(Long projectId) {
+    public void setProjectId(String projectId) {
         this.projectId = projectId;
-    }
-
-    @Title(title = "次序")
-    public int getSeq() {
-        return seq;
-    }
-
-    public void setSeq(int seq) {
-        this.seq = seq;
     }
 
     @Title(title = "描述")

@@ -8,14 +8,14 @@ import org.geelato.core.meta.model.entity.BaseEntity;
 @Title(title = "附件")
 public class Attachment extends BaseEntity {
 
-    private Long fileId;
+    private String fileId;
 
     @Title(title = "文件", description = "引用通用文件表中的id")
-    public Long getFileId() {
+    public String getFileId() {
         return fileId;
     }
 
-    public void setFileId(Long fileId) {
+    public void setFileId(String fileId) {
         this.fileId = fileId;
     }
 }

@@ -10,15 +10,15 @@ import org.geelato.core.meta.model.entity.BaseEntity;
 @Entity(name = "prj_comment")
 @Title(title = "评论")
 public class Comment extends BaseEntity {
-    private Long taskId;
+    private String taskId;
     private String description;
 
     @Title(title = "任务")
-    public Long getTaskId() {
+    public String getTaskId() {
         return taskId;
     }
 
-    public void setTaskId(Long taskId) {
+    public void setTaskId(String taskId) {
         this.taskId = taskId;
     }
 
