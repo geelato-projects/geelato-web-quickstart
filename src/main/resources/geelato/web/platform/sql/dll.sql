@@ -8,31 +8,54 @@ CREATE TABLE IF NOT EXISTS $.tableName (
   @for i in $.addList
     `$.addList[i].name` $.addList[i].type
     @if !$.addList[i].nullable
-      not null
+      NOT NULL
     @/if
     @if $.addList[i].defaultValue!='' && $.addList[i].defaultValue!=null
-      DEFAULT $.addList[i].defaultValue
+      @if $.addList[i].dataType=='BIT'
+        DEFAULT $.addList[i].defaultValue
+      @/if
+      @if $.addList[i].dataType!='BIT'
+        DEFAULT '$.addList[i].defaultValue'
+      @/if
+    @/if
+    @if $.addList[i].autoIncrement
+      AUTO_INCREMENT
     @/if
     @if $.addList[i].comment!='' && $.addList[i].comment!=null
-      COMMENT $.addList[i].comment
+      COMMENT '$.addList[i].comment'
     @/if
     @if i<$.addList.length-1
       ,
     @/if
   @/for
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT $.tableTitle;
+  @if $.uniqueList.length>0 || ($.primaryKey!='' && $.primaryKey!=null)
+    ,
+  @/if
+  @if $.primaryKey!='' && $.primaryKey!=null
+  PRIMARY KEY ($.primaryKey) USING BTREE
+  @/if
+  @if $.uniqueList.length>0
+  ,
+  @/if
+  @for i in $.uniqueList
+    UNIQUE INDEX `$.uniqueList[i].name`(`$.uniqueList[i].name`) USING BTREE
+    @if i<$.uniqueList.length-1
+      ,
+    @/if
+  @/for
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '$.tableTitle';
 UPDATE platform_dev_table SET table_name = '$.tableName' WHERE entity_name = '$.tableName';
-@for i in $.uniqueList
-  alter table $.tableName add unique key(`$.uniqueList[i].name`);
-@/for
-@if $.primaryKey!='' && $.primaryKey!=null
-  ALTER TABLE $.tableName ADD PRIMARY KEY ($.primaryKey);
-@/if
+-- @for i in $.uniqueList
+--   alter table $.tableName add unique key(`$.uniqueList[i].name`);
+-- @/for
+-- @if $.primaryKey!='' && $.primaryKey!=null
+--   ALTER TABLE $.tableName ADD PRIMARY KEY ($.primaryKey);
+-- @/if
 
 -- 更新表
 -- @sql upgradeOneTable
 @if $.tableTitle!='' && $.tableTitle!=null
-  ALTER TABLE $.tableName COMMENT = $.tableTitle;
+  ALTER TABLE $.tableName COMMENT = '$.tableTitle';
 @/if
 
 @for i in $.addList
@@ -41,10 +64,18 @@ UPDATE platform_dev_table SET table_name = '$.tableName' WHERE entity_name = '$.
     not null
   @/if
   @if $.addList[i].defaultValue!='' && $.addList[i].defaultValue!=null
-    DEFAULT $.addList[i].defaultValue
+    @if $.addList[i].dataType=='BIT'
+      DEFAULT $.addList[i].defaultValue
+    @/if
+    @if $.addList[i].dataType!='BIT'
+      DEFAULT '$.addList[i].defaultValue'
+    @/if
+  @/if
+  @if $.addList[i].autoIncrement
+     AUTO_INCREMENT
   @/if
   @if $.addList[i].comment!='' && $.addList[i].comment!=null
-    COMMENT $.addList[i].comment
+    COMMENT '$.addList[i].comment'
   @/if
   ;
 @/for
@@ -55,10 +86,18 @@ UPDATE platform_dev_table SET table_name = '$.tableName' WHERE entity_name = '$.
     not null
   @/if
   @if $.modifyList[i].defaultValue!='' && $.modifyList[i].defaultValue!=null
-    DEFAULT $.modifyList[i].defaultValue
+    @if $.modifyList[i].dataType=='BIT'
+      DEFAULT $.modifyList[i].defaultValue
+    @/if
+    @if $.modifyList[i].dataType!='BIT'
+      DEFAULT '$.modifyList[i].defaultValue'
+    @/if
+  @/if
+  @if $.modifyList[i].autoIncrement
+    AUTO_INCREMENT
   @/if
   @if $.modifyList[i].comment!='' && $.modifyList[i].comment!=null
-    COMMENT $.modifyList[i].comment
+    COMMENT '$.modifyList[i].comment'
   @/if
   ;
 @/for
