@@ -30,3 +30,26 @@ SELECT id,`name`,'0' parentId,'default' component,icon,'' meta,id treeId
 FROM platform_app_user au
 WHERE au.user_id=$.userId
 ORDER BY treeId,parentId ASC;
+
+-- @sql select_platform_tree_node_app_page
+SELECT
+  p1.id,
+  p1.pid,
+  p2.id as appId,
+  p3.id as pageId,
+  p1.flag,
+  p1.icon,
+  p1.type,
+  p1.meta,
+  p1.tree_entity as entity,
+  p1.text,
+  p1.seq_no as seqNo,
+  p1.tenant_code as tenantCode
+FROM platform_tree_node p1
+LEFT JOIN platform_app p2 ON p2.id = p1.tree_id
+LEFT JOIN platform_app_page p3 ON p3.extend_id = p1.id AND p3.app_id = p2.id
+WHERE 1=1
+@if $.appId!=null&&$.appId!=''
+  AND p2.id = '$.appId'
+@/if
+ORDER BY p2.seq_no ASC,p1.seq_no ASC
