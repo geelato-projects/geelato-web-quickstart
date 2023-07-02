@@ -39,17 +39,22 @@ SELECT
   p3.id as pageId,
   p1.flag,
   p1.icon,
+  p1.icon_type as iconType,
   p1.type,
   p1.meta,
-  p1.tree_entity as entity,
+  p1.tree_entity as treeEntity,
+  p1.extend_entity as extendEntity,
   p1.text,
   p1.seq_no as seqNo,
   p1.tenant_code as tenantCode
 FROM platform_tree_node p1
 LEFT JOIN platform_app p2 ON p2.id = p1.tree_id
 LEFT JOIN platform_app_page p3 ON p3.extend_id = p1.id AND p3.app_id = p2.id
-WHERE 1=1
+WHERE 1=1 AND p1.del_status = 0 AND p2.del_status = 0
 @if $.appId!=null&&$.appId!=''
   AND p2.id = '$.appId'
+@/if
+@if $.flag!=null&&$.flag!=''
+  AND p1.flag = '$.flag'
 @/if
 ORDER BY p2.seq_no ASC,p1.seq_no ASC
