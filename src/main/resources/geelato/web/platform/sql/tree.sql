@@ -51,6 +51,9 @@ FROM platform_tree_node p1
 LEFT JOIN platform_app p2 ON p2.id = p1.tree_id
 LEFT JOIN platform_app_page p3 ON p3.extend_id = p1.id AND p3.app_id = p2.id
 WHERE 1=1 AND p1.del_status = 0 AND p2.del_status = 0
+@if $.tenantCode!=null&&$.tenantCode!=''
+  AND p1.tenant_code = '$.tenantCode' AND p2.tenant_code = '$.tenantCode'
+@/if
 @if $.appId!=null&&$.appId!=''
   AND p2.id = '$.appId'
 @/if
