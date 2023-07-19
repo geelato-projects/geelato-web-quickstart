@@ -5,10 +5,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"org.geelato"})
+@EnableCaching // 开启缓存
 public class QuickStartApplication extends BootApplication {
     private static Logger logger = LoggerFactory.getLogger(QuickStartApplication.class);
 
