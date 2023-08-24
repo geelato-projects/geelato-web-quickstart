@@ -61,3 +61,15 @@ WHERE 1=1 AND p1.del_status = 0 AND p2.del_status = 0
   AND p1.flag = '$.flag'
 @/if
 ORDER BY p2.seq_no ASC,p1.seq_no ASC
+
+-- @sql query_tree_platform_org
+SELECT
+    p1.*,
+    IF(p2.total > 0,0,1) isLeaf
+FROM platform_org p1
+LEFT JOIN (SELECT count(*) total,pid FROM platform_org WHERE del_status = 0 GROUP BY pid) p2 ON p2.pid = p1.id
+WHERE 1=1 AND p1.del_status = 0
+@if $.pid!=null&&$.pid!=''
+  AND p1.pid = '$.pid'
+@/if
+ORDER BY p1.seq_no ASC
