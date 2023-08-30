@@ -72,4 +72,7 @@ WHERE 1=1 AND p1.del_status = 0
 @if $.pid!=null&&$.pid!=''
   AND p1.pid = '$.pid'
 @/if
+@if $.tenantCode!=null&&$.tenantCode!=''
+  AND p1.tenant_code = '$.tenantCode'
+@/if
 ORDER BY p1.seq_no ASC
