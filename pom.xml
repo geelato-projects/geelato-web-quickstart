@@ -34,6 +34,10 @@
                     <groupId>redis.clients</groupId>
                     <artifactId>jedis</artifactId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>xmlbeans</artifactId>
+                    <groupId>org.apache.xmlbeans</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
