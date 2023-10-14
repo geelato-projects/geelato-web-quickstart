@@ -60,6 +60,12 @@ WHERE 1=1 AND p1.del_status = 0 AND p2.del_status = 0
 @if $.flag!=null&&$.flag!=''
   AND p1.flag = '$.flag'
 @/if
+@if $.currentUser!=null&&$.currentUser!=''
+  and p1.id in (SELECT r1.tree_node_id FROM platform_role_r_tree_node r1
+      LEFT JOIN platform_role_r_user r2 ON r1.role_id = r2.role_id
+      WHERE 1=1 AND r1.del_status = 0 AND r2.del_status = 0
+      AND r2.user_id = '$.currentUser')
+@/if
 ORDER BY p2.seq_no ASC,p1.seq_no ASC
 
 -- @sql query_tree_platform_org
