@@ -1,9 +1,21 @@
 -- 模型变更，表名变更
 -- @sql metaResetOrDeleteTable
-UPDATE platform_dev_column SET table_name = '$.newEntityName' , del_status = $.delStatus , enable_status = $.enableStatus WHERE table_name = '$.entityName';
-UPDATE platform_dev_table_foreign SET main_table = '$.newEntityName' , del_status = $.delStatus , enable_status = $.enableStatus WHERE main_table = '$.entityName';
+UPDATE platform_dev_column SET table_name = '$.newEntityName' , del_status = $.delStatus ,
+@if $.deleteAt
+    delete_at = '$.deleteAt' ,
+@/if
+enable_status = $.enableStatus WHERE table_name = '$.entityName';
+UPDATE platform_dev_table_foreign SET main_table = '$.newEntityName' , del_status = $.delStatus ,
+@if $.deleteAt
+    delete_at = '$.deleteAt' ,
+@/if
+enable_status = $.enableStatus WHERE main_table = '$.entityName';
 UPDATE platform_dev_table_foreign SET foreign_table = '$.newEntityName' WHERE foreign_table = '$.entityName';
-UPDATE platform_dev_view SET entity_name = '$.newEntityName' , del_status = $.delStatus , enable_status = $.enableStatus WHERE entity_name = '$.entityName';
+UPDATE platform_dev_view SET entity_name = '$.newEntityName' , del_status = $.delStatus ,
+@if $.deleteAt
+    delete_at = '$.deleteAt' ,
+@/if
+enable_status = $.enableStatus WHERE entity_name = '$.entityName';
 @if $.isTable
     ALTER TABLE $.entityName COMMENT = '$.newComment';
     RENAME TABLE $.entityName TO $.newEntityName;
@@ -12,8 +24,9 @@ UPDATE platform_dev_view SET entity_name = '$.newEntityName' , del_status = $.de
 -- 模型变更，字段变更
 -- @sql metaDeleteColumn
 UPDATE platform_dev_table_foreign
-SET del_status = $.delStatus , enable_status = $.enableStatus , description = CONCAT('$.remark',description)
-WHERE FIND_IN_SET('$.name',main_table_col) OR FIND_IN_SET('$.name',foreign_table_col);
+SET del_status = $.delStatus , delete_at = '$.deleteAt' , enable_status = $.enableStatus , description = CONCAT('$.remark',description)
+WHERE 1=1 AND del_status = 0
+AND (main_table = '$.tableName' AND FIND_IN_SET('$.name',main_table_col)) OR (foreign_table = '$.tableName' AND FIND_IN_SET('$.name',foreign_table_col));
 @if $.isColumn
     alter table $.tableName CHANGE COLUMN `$.name` `$.newName` $.type
         @if !$.nullable
@@ -38,8 +51,8 @@ WHERE FIND_IN_SET('$.name',main_table_col) OR FIND_IN_SET('$.name',foreign_table
 
 -- 模型变更，字段变更
 -- @sql metaResetColumn
-UPDATE platform_dev_table_foreign SET main_table_col = '$.formname' WHERE FIND_IN_SET('$.modelname',main_table_col);
-UPDATE platform_dev_table_foreign SET foreign_table_col = '$.formname' WHERE FIND_IN_SET('$.modelname',foreign_table_col);
+UPDATE platform_dev_table_foreign SET main_table_col = '$.formname' WHERE del_status = 0 AND main_table = '$.modeltableName' AND FIND_IN_SET('$.modelname',main_table_col);
+UPDATE platform_dev_table_foreign SET foreign_table_col = '$.formname' WHERE del_status = 0 AND foreign_table = '$.modeltableName' AND FIND_IN_SET('$.modelname',foreign_table_col);
 @if $.isColumn
     alter table $.modeltableName CHANGE COLUMN `$.modelname` `$.formname` $.formtype
         @if !$.formnullable
