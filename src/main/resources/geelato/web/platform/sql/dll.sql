@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS $.tableName (
     @/if
   @/for
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT '$.tableTitle';
-UPDATE platform_dev_table SET table_name = '$.tableName' WHERE entity_name = '$.tableName';
+UPDATE platform_dev_table SET table_name = '$.tableName' AND synced = 1 WHERE entity_name = '$.tableName';
 UPDATE platform_dev_column SET synced = 1 WHERE del_status = 0 AND table_name = '$.tableName';
 -- @for i in $.uniqueList
 --   alter table $.tableName add unique key(`$.uniqueList[i].name`);
@@ -113,6 +113,7 @@ UPDATE platform_dev_column SET synced = 1 WHERE del_status = 0 AND table_name = 
 @for i in $.uniqueList
 alter table $.tableName add unique key(`$.uniqueList[i].name`);
 @/for
+UPDATE platform_dev_table SET synced = 1 WHERE entity_name = '$.tableName';
 UPDATE platform_dev_column SET synced = 1 WHERE del_status = 0 AND table_name = '$.tableName';
 
 -- 更改表
