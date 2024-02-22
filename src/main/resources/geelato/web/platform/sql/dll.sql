@@ -38,7 +38,12 @@ CREATE TABLE IF NOT EXISTS $.tableName (
   ,
   @/if
   @for i in $.uniqueList
-    UNIQUE INDEX `$.uniqueList[i].name`(`$.uniqueList[i].name`) USING BTREE
+    @if $.hasDelStatus
+  UNIQUE INDEX `$.uniqueList[i].name`(`$.uniqueList[i].name`,`del_status`) USING BTREE
+    @/if
+    @if !$.hasDelStatus
+      UNIQUE INDEX `$.uniqueList[i].name`(`$.uniqueList[i].name`) USING BTREE
+    @/if
     @if i<$.uniqueList.length-1
       ,
     @/if
@@ -111,7 +116,12 @@ UPDATE platform_dev_column SET synced = 1 WHERE del_status = 0 AND table_name = 
 @/if
 
 @for i in $.uniqueList
-alter table $.tableName add unique key(`$.uniqueList[i].name`);
+    @if $.hasDelStatus
+ALTER TABLE $.tableName ADD UNIQUE INDEX `$.uniqueList[i].name`(`$.uniqueList[i].name`, `del_status`) USING BTREE;
+    @/if
+    @if !$.hasDelStatus
+ALTER TABLE $.tableName ADD UNIQUE INDEX `$.uniqueList[i].name`(`$.uniqueList[i].name`) USING BTREE;
+    @/if
 @/for
 UPDATE platform_dev_table SET synced = 1 WHERE entity_name = '$.tableName';
 UPDATE platform_dev_column SET synced = 1 WHERE del_status = 0 AND table_name = '$.tableName';
