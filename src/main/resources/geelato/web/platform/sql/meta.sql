@@ -4,7 +4,7 @@ UPDATE platform_dev_column SET table_name = '$.newEntityName' , del_status = $.d
 @if $.deleteAt
     delete_at = '$.deleteAt' ,
 @/if
-enable_status = $.enableStatus WHERE table_name = '$.entityName';
+enable_status = $.enableStatus WHERE table_name = '$.entityName' AND del_status = 0;
 UPDATE platform_dev_table_foreign SET main_table = '$.newEntityName' , del_status = $.delStatus ,
 @if $.deleteAt
     delete_at = '$.deleteAt' ,
