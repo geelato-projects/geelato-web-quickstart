@@ -82,3 +82,18 @@ WHERE 1=1 AND p1.del_status = 0
   AND p1.tenant_code = '$.tenantCode'
 @/if
 ORDER BY p1.seq_no ASC
+
+-- @sql query_app_by_role_user
+SELECT DISTINCT p1.* from platform_app p1
+LEFT JOIN platform_role p2 ON p2.app_id = p1.id
+LEFT JOIN platform_role_r_user p3 ON p3.role_id = p2.id
+LEFT JOIN platform_user p4 ON p4.id = p3.user_id
+WHERE 1=1
+  AND p1.del_status = 0
+  AND p2.del_status = 0
+  AND p3.del_status = 0
+  AND p4.del_status = 0
+  AND p2.enable_status = 1
+  AND p1.tenant_code = '$.tenantCode'
+  AND p4.id = '$.userId'
+ORDER BY p1.seq_no ASC
