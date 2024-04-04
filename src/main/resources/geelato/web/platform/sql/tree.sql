@@ -73,10 +73,24 @@ SELECT
     p1.*,
     IF(p2.total > 0,0,1) isLeaf
 FROM platform_org p1
-LEFT JOIN (SELECT count(*) total,pid FROM platform_org WHERE del_status = 0 GROUP BY pid) p2 ON p2.pid = p1.id
+LEFT JOIN (
+SELECT count(*) total,pid FROM platform_org WHERE del_status = 0
+@if $.status!=null&&$.status!=''
+  AND status = '$.status'
+@/if
+@if $.tenantCode!=null&&$.tenantCode!=''
+  AND tenant_code = '$.tenantCode'
+@/if
+GROUP BY pid) p2 ON p2.pid = p1.id
 WHERE 1=1 AND p1.del_status = 0
-@if $.pid!=null&&$.pid!=''
+@if $.pid=='root'
+  AND (p1.pid = '' or p1.pid is null)
+@/if
+@if $.pid!=null&&$.pid!=''&&$.pid!='root'
   AND p1.pid = '$.pid'
+@/if
+@if $.status!=null&&$.status!=''
+  AND p1.status = '$.status'
 @/if
 @if $.tenantCode!=null&&$.tenantCode!=''
   AND p1.tenant_code = '$.tenantCode'
