@@ -14,6 +14,8 @@ SELECT
     p2.code as roleCode,
     p2.type as roleType,
     p2.weight as roleWeight,
+    p2.enable_status as roleEnableStatus,
+    p2.seq_no as roleSeqNo,
     p2.description as roleDescription,
     p3.logo as appLogo,
     p3.name as appName,
@@ -48,6 +50,9 @@ WHERE 1=1 AND p1.del_status = 0
 @/if
 @if $.roleWeight!=null&&$.roleWeight!=''
   AND p2.weight = '$.roleWeight'
+@/if
+@if $.roleEnableStatus!=null&&$.roleEnableStatus!=''
+  AND p2.enable_status = '$.roleEnableStatus'
 @/if
 @if $.appName!=null&&$.appName!=''
   AND p3.name like '%$.appName%'
@@ -86,6 +91,8 @@ SELECT
     p2.code as roleCode,
     p2.type as roleType,
     p2.weight as roleWeight,
+    p2.enable_status as roleEnableStatus,
+    p2.seq_no as roleSeqNo,
     p2.description as roleDescription,
     p3.name as permissionName,
     p3.code as permissionCode,
@@ -120,6 +127,9 @@ WHERE 1=1 AND p1.del_status = 0
 @/if
 @if $.roleWeight!=null&&$.roleWeight!=''
   AND p2.weight = '$.roleWeight'
+@/if
+@if $.roleEnableStatus!=null&&$.roleEnableStatus!=''
+  AND p2.enable_status = '$.roleEnableStatus'
 @/if
 @if $.permissionName!=null&&$.permissionName!=''
   AND p3.name like '%$.permissionName%'
@@ -202,6 +212,7 @@ WHERE 1=1 and del_status = 0
     ORDER BY $.orderBy
 @/if
 
+
 -- @sql page_query_platform_role_r_user
 SELECT
     p1.id,
@@ -219,6 +230,8 @@ SELECT
     p2.code as roleCode,
     p2.type as roleType,
     p2.weight as roleWeight,
+    p2.enable_status as roleEnableStatus,
+    p2.seq_no as roleSeqNo,
     p2.description as roleDescription,
     p3.name as userName,
     p3.en_name as userEnName,
@@ -264,6 +277,101 @@ WHERE 1=1 AND p1.del_status = 0
 @/if
 @if $.roleWeight!=null&&$.roleWeight!=''
   AND p2.weight = '$.roleWeight'
+@/if
+@if $.roleEnableStatus!=null&&$.roleEnableStatus!=''
+  AND p2.enable_status = '$.roleEnableStatus'
+@/if
+@if $.userName!=null&&$.userName!=''
+  AND p3.name like '%$.userName%'
+@/if
+@if $.userEnName!=null&&$.userEnName!=''
+  AND p3.en_name like '%$.userEnName%'
+@/if
+@if $.userLoginName!=null&&$.userLoginName!=''
+  AND p3.login_name like '%$.userLoginName%'
+@/if
+@if $.userOrgName!=null&&$.userOrgName!=''
+  AND p3.orgName like '%$.userOrgName%'
+@/if
+@if $.userType!=null&&$.userType!=''
+  AND p3.type = '$.userType'
+@/if
+@if $.userEnableStatus!=null&&$.userEnableStatus!=''
+  AND p3.enable_status = '$.userEnableStatus'
+@/if
+@if $.orderBy!=null&&$.orderBy!=''
+  ORDER BY $.orderBy
+@/if
+@if $.pageSize!=null&&$.pageSize!=''
+  LIMIT $.pageSize OFFSET $.startNum
+@/if
+
+
+-- @sql page_query_platform_org_r_user
+SELECT
+    p1.id,
+    p1.tenant_code as tenantCode,
+    p1.org_id as orgId,
+    p1.user_id as userId,
+    p1.default_org as defaultOrg,
+    p1.update_at as updateAt,
+    p1.updater,
+    p1.updater_name as updaterName,
+    p1.create_at as createAt,
+    p1.creator,
+    p1.creator_name as creatorName,
+    p2.pid as orgPid,
+    p2.name as orgName,
+    p2.code as orgCode,
+    p2.type as orgType,
+    p2.category as orgCategory,
+    p2.status as orgStatus,
+    p2.seq_no as orgSeqNo,
+    p2.description as orgDescription,
+    p3.name as userName,
+    p3.en_name as userEnName,
+    p3.login_name as userLoginName,
+    p3.org_id as userOrgId,
+    p3.orgName as userOrgName,
+    p3.sex as userSex,
+    p3.source as userSource,
+    p3.type as userType,
+    p3.post as userPost,
+    p3.email as userEmail,
+    p3.address as userAddress,
+    p3.mobile_prefix as userMobilePrefix,
+    p3.mobile_phone as userMobilePhone,
+    p3.job_number as userJobNumber,
+    p3.cooperating_org_id as userCooperatingOrgId,
+    p3.enable_status as userEnableStatus,
+    p3.description as userDescription
+FROM platform_org_r_user p1
+LEFT JOIN platform_org p2 ON p2.id = p1.org_id
+LEFT JOIN platform_user p3 ON p3.id = p1.user_id
+WHERE 1=1 AND p1.del_status = 0
+@if $.orgId!=null&&$.orgId!=''
+  AND p1.org_id = '$.orgId'
+@/if
+@if $.userId!=null&&$.userId!=''
+  AND p1.user_id = '$.userId'
+@/if
+@if $.tenantCode!=null&&$.tenantCode!=''
+  AND p1.tenant_code = '$.tenantCode'
+@/if
+@if $.orgName!=null&&$.orgName!=''
+  AND p2.name like '%$.orgName%'
+@/if
+@if $.orgCode!=null&&$.orgCode!=''
+  AND p2.code like '%$.orgCode%'
+@/if
+@if $.orgType!=null&&$.orgType!=''
+  AND p2.type = '$.orgType'
+@/if
+@if $.orgCategory!=null&&$.orgCategory!=''
+  AND p2.category = '$.orgCategory'
+@/if
+@if $.orgStatus!=null&&$.orgStatus!=''
+  AND p2.status = '$.orgStatus'
 @/if
 @if $.userName!=null&&$.userName!=''
   AND p3.name like '%$.userName%'
