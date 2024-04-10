@@ -397,3 +397,61 @@ WHERE 1=1 AND p1.del_status = 0
 @if $.pageSize!=null&&$.pageSize!=''
   LIMIT $.pageSize OFFSET $.startNum
 @/if
+
+
+-- @sql page_query_platform_export_template
+SELECT
+    id as id,
+    app_id as appId,
+    title as title,
+    use_type as useType,
+    file_type as fileType,
+    file_code as fileCode,
+    IF(enable_status,1,0) AS enableStatus,
+    description as description,
+    dept_id as deptId,
+    bu_id as buId,
+    tenant_code as tenantCode,
+    del_status as delStatus,
+    update_at as updateAt,
+    updater as updater,
+    updater_name as updaterName,
+    create_at as createAt,
+    creator as creator,
+    creator_name as creatorName,
+    delete_at as deleteAt
+FROM platform_export_template
+WHERE 1=1 AND del_status = 0
+@if $.id!=null&&$.id!=''
+  AND id = '$.id'
+@/if
+@if $.appId!=null&&$.appId!=''
+  AND app_id = '$.appId'
+@/if
+@if $.tenantCode!=null&&$.tenantCode!=''
+  AND tenant_code = '$.tenantCode'
+@/if
+@if $.title!=null&&$.title!=''
+  AND title like '%$.title%'
+@/if
+@if $.useType!=null&&$.useType!=''
+  AND use_type = '$.useType'
+@/if
+@if $.fileType!=null&&$.fileType!=''
+  AND file_type = '$.fileType'
+@/if
+@if $.fileCode!=null&&$.fileCode!=''
+  AND file_code like '%$.fileCode%'
+@/if
+@if $.enableStatus!=null&&$.enableStatus!=''
+  AND enable_status = '$.enableStatus'
+@/if
+@if $.description!=null&&$.description!=''
+  AND description like '%$.description%'
+@/if
+@if $.orderBy!=null&&$.orderBy!=''
+  ORDER BY $.orderBy
+@/if
+@if $.pageSize!=null&&$.pageSize!=''
+  LIMIT $.pageSize OFFSET $.startNum
+@/if
