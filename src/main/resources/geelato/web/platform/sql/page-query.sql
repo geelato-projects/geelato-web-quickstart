@@ -528,3 +528,5 @@ WHERE 1=1 AND p1.del_status = 0
 @if $.pageSize!=null&&$.pageSize!=''
   LIMIT $.pageSize OFFSET $.startNum
 @/if
+
+-- @sql page_query_platform_app_r_table
