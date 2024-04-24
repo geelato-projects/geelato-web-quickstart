@@ -89,6 +89,9 @@ WHERE 1=1 AND p1.del_status = 0
 @if $.pid!=null&&$.pid!=''&&$.pid!='root'
   AND p1.pid = '$.pid'
 @/if
+@if $.id!=null&&$.id!=''
+  AND FIND_IN_SET(p1.id,'$.id')
+@/if
 @if $.status!=null&&$.status!=''
   AND p1.status = '$.status'
 @/if
