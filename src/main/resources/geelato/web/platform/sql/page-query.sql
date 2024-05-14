@@ -20,6 +20,7 @@ SELECT
     p3.logo as appLogo,
     p3.name as appName,
     p3.code as appCode,
+    p3.type as appType,
     p3.icon as appIcon,
     p3.watermark as appWaterMark,
     p3.apply_status as appApplyStatus,
@@ -59,6 +60,9 @@ WHERE 1=1 AND p1.del_status = 0
 @/if
 @if $.appCode!=null&&$.appCode!=''
   AND p3.code like '%$.appCode%'
+@/if
+@if $.appType!=null&&$.appType!=''
+  AND p3.type = '$.appType'
 @/if
 @if $.appApplyStatus!=null&&$.appApplyStatus!=''
   AND p3.apply_status = '$.appApplyStatus'
@@ -479,6 +483,7 @@ SELECT
     p3.logo as appLogo,
     p3.name as appName,
     p3.code as appCode,
+    p3.type as appType,
     p3.icon as appIcon,
     p3.watermark as appWaterMark,
     p3.apply_status as appApplyStatus,
@@ -515,6 +520,9 @@ WHERE 1=1 AND p1.del_status = 0
 @/if
 @if $.appCode!=null&&$.appCode!=''
   AND p3.code like '%$.appCode%'
+@/if
+@if $.appType!=null&&$.appType!=''
+  AND p3.type = '$.appType'
 @/if
 @if $.appApplyStatus!=null&&$.appApplyStatus!=''
   AND p3.apply_status = '$.appApplyStatus'
