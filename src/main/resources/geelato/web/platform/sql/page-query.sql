@@ -540,3 +540,58 @@ WHERE 1=1 AND p1.del_status = 0
 @/if
 
 -- @sql page_query_platform_app_r_table
+
+-- @sql page_query_platform_role_app
+SELECT
+    distinct id,
+    app_id as appId,
+    name,
+    code,
+    type,
+    weight,
+    enable_status as enableStatus,
+    description,
+    seq_no as seqNo,
+    used_app as usedApp,
+    dept_id as deptId,
+    bu_id as buId,
+    tenant_code as tenantCode,
+    del_status as delStatus,
+    update_at as updateAt,
+    updater,
+    updater_name as updaterName,
+    create_at as createAt,
+    creator,
+    creator_name as creatorName,
+    delete_at as deleteAt
+FROM (SELECT p1.* FROM platform_role p1
+    WHERE 1=1 and p1.type = 'app'
+    and p1.app_id = '$.appId'
+    UNION ALL
+    SELECT DISTINCT p1.* FROM platform_role p1
+    LEFT JOIN platform_role_r_app p2 on p2.role_id = p1.id
+    WHERE 1=1 and p2.del_status = 0
+    and p1.type = 'platform' and p1.used_app = 1
+    and p2.app_id = '$.appId') p
+WHERE 1=1 and p.del_status = 0
+@if $.name!=null&&$.name!=''
+  AND p.name like '%$.name%'
+@/if
+@if $.code!=null&&$.code!=''
+  AND p.code like '%$.code%'
+@/if
+@if $.type!=null&&$.type!=''
+  AND p.type = '$.type'
+@/if
+@if $.weight!=null&&$.weight!=''
+  AND p.weight = '$.weight'
+@/if
+@if $.enableStatus!=null&&$.enableStatus!=''
+  AND p.enable_status = '$.enableStatus'
+@/if
+@if $.orderBy!=null&&$.orderBy!=''
+  ORDER BY $.orderBy
+@/if
+@if $.pageSize!=null&&$.pageSize!=''
+  LIMIT $.pageSize OFFSET $.startNum
+@/if
