@@ -9,7 +9,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"org.geelato"})
+@ComponentScan(basePackages = {"org.geelato","cn.geelato"})
 @EnableCaching // 开启缓存
 public class QuickStartApplication extends BootApplication {
     private static final Logger logger = LoggerFactory.getLogger(QuickStartApplication.class);
