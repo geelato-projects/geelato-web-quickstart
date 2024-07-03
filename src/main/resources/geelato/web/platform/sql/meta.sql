@@ -35,8 +35,9 @@ UPDATE platform_app_r_view set del_status = $.delStatus ,
 @/if
 enable_status = $.enableStatus WHERE view_id = '$.viewId' AND del_status = 0;
 UPDATE platform_permission SET del_status = $.delStatus WHERE object = '$.viewName' AND del_status = 0;
-@if $.isView
-DROP VIEW IF EXISTS $.viewName;
+@if $.isView && $.newSql
+    $.newSql;
+    DROP VIEW IF EXISTS $.viewName;
 @/if
 
 -- 模型变更，字段变更
