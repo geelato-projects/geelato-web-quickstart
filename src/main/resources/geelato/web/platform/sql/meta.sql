@@ -16,9 +16,27 @@ UPDATE platform_dev_view SET entity_name = '$.newEntityName' , del_status = $.de
     delete_at = '$.deleteAt' ,
 @/if
 enable_status = $.enableStatus WHERE entity_name = '$.entityName';
+UPDATE platform_app_r_table set del_status = $.delStatus ,
+@if $.deleteAt
+    delete_at = '$.deleteAt' ,
+@/if
+enable_status = $.enableStatus WHERE table_name = '$.entityName' AND del_status = 0;
+UPDATE platform_permission SET del_status = $.delStatus WHERE object = '$.entityName' AND del_status = 0;
+UPDATE platform_permission SET del_status = $.delStatus WHERE object LIKE '$.entityName:%' AND del_status = 0;
 @if $.isTable
     ALTER TABLE $.entityName COMMENT = '$.newComment';
     RENAME TABLE $.entityName TO $.newEntityName;
+@/if
+
+--@sql metaResetOrDeleteView
+UPDATE platform_app_r_view set del_status = $.delStatus ,
+@if $.deleteAt
+    delete_at = '$.deleteAt' ,
+@/if
+enable_status = $.enableStatus WHERE view_id = '$.viewId' AND del_status = 0;
+UPDATE platform_permission SET del_status = $.delStatus WHERE object = '$.viewName' AND del_status = 0;
+@if $.isView
+DROP VIEW IF EXISTS $.viewName;
 @/if
 
 -- 模型变更，字段变更
