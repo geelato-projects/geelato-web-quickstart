@@ -48,19 +48,6 @@
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <!--suppress UnresolvedMavenProperty -->
-            <version>${redis.clients.version}</version>
-        </dependency>
-        <!--  启动时报错 java.lang.NoClassDefFoundError: javax/servlet/Filter      -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.xml.bind</groupId>
