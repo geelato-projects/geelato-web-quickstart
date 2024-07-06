@@ -28,7 +28,6 @@
         <dependency>
             <groupId>org.geelato</groupId>
             <artifactId>geelato-web-platform</artifactId>
-            <version>1.0.2-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>redis.clients</groupId>
@@ -65,11 +64,6 @@
             <version>2.2.11</version>
         </dependency>
         <dependency>
-            <groupId>javax.activation</groupId>
-            <artifactId>activation</artifactId>
-            <version>1.1.1</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
             <version>${apache.poi.version}</version>
@@ -95,14 +89,6 @@
     </dependencies>
 
     <build>
-        <!-- 以下为远程部署 -->
-        <extensions>
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ssh</artifactId>
-                <version>${wagon-ssh.version}</version>
-            </extension>
-        </extensions>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -121,25 +107,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <!--最长启动时间-->
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>wagon-maven-plugin</artifactId>
-                <version>1.0</version>
-                <!-- 运行package打包的同时运行upload-single和sshexec -->
-                <configuration>
-                    <serverId>itg</serverId>
-                    <url>scp://your_server_ip</url>
-                    <fromDir>target</fromDir>
-                    <includes>*.jar</includes>
-                    <!--注意该目录从根目录"/"开始，并非当前用户目录开始-->
-                    <toDir>xxx/deploy/upload/app</toDir>
-                    <commands>
-                        <command>/xxx/web/deploy.sh</command>
-                    </commands>
-                    <displayCommandOutputs>true</displayCommandOutputs>
-                </configuration>
             </plugin>
         </plugins>
     </build>
